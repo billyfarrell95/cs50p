@@ -3,8 +3,12 @@ def main():
     y = input("What's y? ")
     answer = calculate_sum(x, y)
     print(answer)
+    a = input("What's a? ")
+    b = input("What's b? ")
+    div_answer = calculate_div(a, b)
+    print(f"{div_answer:.2f} using f strings")
+    print(round(div_answer, 2), "using round")
 
-# print function with basic check if entered values are numbers
 def calculate_sum(x, y):
     try:
         # if x and y are numbers, print the sum and exit program
@@ -14,6 +18,13 @@ def calculate_sum(x, y):
         # print("Formatted", f"{sum:,}")
         # print("Rounded to 2 decimals", f"{round(sum, 2):,}")
         return f"{round(sum, 2):,}"
+    except:
+        return "Make sure to enter numbers!"
+
+def calculate_div(a, b):
+    try:
+        answer = float(a) / float(b)
+        return answer
     except:
         return "Make sure to enter numbers!"
 
