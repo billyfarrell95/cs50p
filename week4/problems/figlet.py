@@ -1,6 +1,5 @@
-from pyfiglet import Figlet, FontNotFound
-import sys
-import random
+from pyfiglet import Figlet
+import sys, random
 
 figlet = Figlet()
 figlet_fonts = figlet.getFonts()
