@@ -24,10 +24,10 @@ def main():
         answered += 1
 
 def get_level():
-    level = input("Level: ")
-    level = int(level)
     while True:
-        if level in [1, 2, 3]:
+        level = input("Level: ")
+        if level in ["1", "2", "3"]:
+            level = int(level)
             return level
 
 
