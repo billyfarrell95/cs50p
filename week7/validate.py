@@ -1,9 +1,11 @@
 import re
 
+# Lecture 57:00
 def main():
     while True:
         email = input("What's your email? ").strip()
-        if re.search(r"^.+@.+\.edu$", email):
+        # \w = [a-zA-Z0-9_]
+        if re.search(r"^\w+@\w+\.edu$", email):
             print("Valid")
         else:
             print("Invalid")
