@@ -26,7 +26,7 @@
 [Week 7 - Regular Expressions](https://github.com/billyfarrell95/cs50p/tree/main/week7)
 
 ## Week 8
-[Week 8 - Object Oriented Programming](https://cs50.harvard.edu/python/2022/weeks/8/)
+[Week 8 - Object Oriented Programming](https://github.com/billyfarrell95/cs50p/tree/main/week8)
 
 ## Week 9
 [Week 9 - Et Cetera](https://cs50.harvard.edu/python/2022/weeks/9/)
