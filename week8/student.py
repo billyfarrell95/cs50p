@@ -1,13 +1,10 @@
 import emoji
 
-# Lecture - 1:16
+# Lecture - 1:38
+
 class Student:
     # Instantiate object
     def __init__(self, name, house, patronus):
-        if not name:
-            raise ValueError("Missing name")
-        if house not in ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]:
-            raise ValueError("Invalid house")
         self.name = name
         self.house = house
         self.patronus = patronus
@@ -27,8 +24,32 @@ class Student:
             case _:
                 return emoji.emojize(":magic_wand:")
 
+    @property
+    def name(self):
+        return self._name
+    
+    @name.setter
+    def name(self, name):
+        if not name:
+            raise ValueError("Missing name")
+        self._name = name
+
+    # Getter method
+    @property
+    def house(self):
+        return self._house
+    
+    # Setter method
+    @house.setter
+    def house(self, house):
+        if house not in ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]:
+            raise ValueError("Invalid house")
+        self._house = house
+
 def main():
     student = get_student()
+    # student.house = "Cannot be reassigned because of getter/setter"
+    # student._house = "Can be reassigned, but shouldn't"
     print("Expecto Patronum!")
     print(student)
     print(student.charm())
