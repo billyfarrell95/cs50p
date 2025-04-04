@@ -15,3 +15,5 @@ def percent_to_float(p):
     return float(percent) / 100
 
 main()
+
+# check50 --local cs50/problems/2022/python/tip
