@@ -16,4 +16,5 @@ def percent_to_float(p):
 
 main()
 
+# PASS
 # check50 --local cs50/problems/2022/python/tip

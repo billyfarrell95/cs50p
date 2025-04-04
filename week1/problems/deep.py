@@ -7,3 +7,6 @@ def main():
             print("No")
 
 main()
+
+# PASS
+# check50 --local cs50/problems/2022/python/deep

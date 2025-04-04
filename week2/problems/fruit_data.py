@@ -20,7 +20,7 @@ fruit_data = {
     "honeydew": {
         "calories": "50",
     },
-    "kiwi": {
+    "kiwifruit": {
         "calories": "90",
     },
     "lemon": {

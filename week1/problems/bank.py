@@ -8,3 +8,6 @@ def main():
         print("$100")
 
 main()
+
+# PASS
+# check50 --local cs50/problems/2022/python/bank

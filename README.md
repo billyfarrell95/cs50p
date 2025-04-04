@@ -6,9 +6,11 @@
 
 ## Week 1
 [Week 1 - Conditionals](https://github.com/billyfarrell95/cs50p/tree/main/week1)
+- meal.py FAILS
 
 ## Week 2
 [Week 2 - Loops](https://github.com/billyfarrell95/cs50p/tree/main/week2)
+- coke.py FAILS
 
 ## Week 3
 [Week 3 - Exceptions](https://github.com/billyfarrell95/cs50p/tree/main/week3)

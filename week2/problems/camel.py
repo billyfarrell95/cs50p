@@ -13,3 +13,6 @@ def convert_to_snake_case(camel_case_string):
     return snake_case
 
 main()
+
+# PASS
+# check50 --local cs50/problems/2022/python/camel

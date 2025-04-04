@@ -10,8 +10,6 @@ def convert(input_str):
     is_12_hour = "am" in input_str or "pm" in input_str
     match is_12_hour:
         case True:
-            print("12h detected...")
-            # expects format 07:30 am or 1:00 pm
             input_str_list = input_str.split(" ")
             time = input_str_list[0]
             am_pm = input_str_list[1]
@@ -30,7 +28,6 @@ def convert(input_str):
             else:
                 print("Enter a valid time")
         case False:
-            print("24h detected...")
             # expects format 7:00, 07:45, 15:34
             hour = float(input_str.split(":")[0])
             minutes = float(input_str.split(":")[1])
@@ -48,3 +45,5 @@ def convert(input_str):
 
 if __name__ == "__main__":
     main()
+
+# check50 --local cs50/problems/2022/python/meal

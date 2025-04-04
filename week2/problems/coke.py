@@ -12,3 +12,5 @@ def main():
                 print("Amount Due: ", cost - inserted)
 
 main()
+
+# check50 --local cs50/problems/2022/python/coke
