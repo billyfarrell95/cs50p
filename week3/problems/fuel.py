@@ -22,3 +22,5 @@ def convert_to_percent(fraction_str):
             return f"{percent}%"
 
 main()
+
+# check50 --local cs50/problems/2022/python/fuel

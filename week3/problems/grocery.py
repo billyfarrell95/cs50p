@@ -22,3 +22,5 @@ def show_list():
         print(f"{num_of_item} - {item}")
 
 main()
+
+# check50 --local cs50/problems/2022/python/grocery

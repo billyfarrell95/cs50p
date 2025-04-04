@@ -50,3 +50,5 @@ def format_date(date_string):
             raise ValueError(f"Invalid date format: {e}")
 
 main()
+
+# check50 --local cs50/problems/2022/python/outdated
