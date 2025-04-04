@@ -1,7 +1,5 @@
 import emoji
 
-# Lecture - 1:38
-
 class Student:
     # Instantiate object
     def __init__(self, name, house, patronus):
@@ -45,21 +43,22 @@ class Student:
         if house not in ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]:
             raise ValueError("Invalid house")
         self._house = house
+    
+    # @classmethod: can call method without instantiating the object
+    @classmethod
+    def get(cls):
+        name = input("Name: ")
+        house = input("House: ")
+        patronus = input("Patronus: ")
+        return cls(name, house, patronus)
 
 def main():
-    student = get_student()
+    student = Student.get()
     # student.house = "Cannot be reassigned because of getter/setter"
     # student._house = "Can be reassigned, but shouldn't"
     print("Expecto Patronum!")
     print(student)
     print(student.charm())
-
-def get_student():
-    name = input("Name: ")
-    house = input("House: ")
-    patronus = input("Patronus: ")
-    # Constructor call
-    return Student(name, house, patronus) 
 
 if __name__ == "__main__":
     main()
