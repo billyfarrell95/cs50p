@@ -6,11 +6,14 @@ def main():
         if (coin == 5 or coin == 10 or coin == 25):
             inserted += coin
             if (inserted >= cost):
-                print("Change Owed: ", inserted - cost)
+                print("Change Owed:", inserted - cost)
                 break
             else:
-                print("Amount Due: ", cost - inserted)
+                print("Amount Due:", cost - inserted)
+        else:
+            print("Amount Due:", cost - inserted)
 
 main()
 
+# PASS
 # check50 --local cs50/problems/2022/python/coke
