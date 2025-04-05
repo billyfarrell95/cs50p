@@ -18,14 +18,17 @@ def main():
             date = input("Date: ").strip()
             formatted_date = format_date(date)
             print(formatted_date)
+            break
         except ValueError as e:
             print(e)
 
 
 def format_date(date_string):
-    if date_string[1].isalpha():
+    if date_string[0].isalpha():
         try:
             month, day, year = date_string.split(" ")
+            if "," not in day:
+                raise ValueError("Invalid date format")
             day = day.replace(",", "")
             if 1 <= int(day) <= 31:
                 for i in range(len(months)):
@@ -51,4 +54,5 @@ def format_date(date_string):
 
 main()
 
+# PASS
 # check50 --local cs50/problems/2022/python/outdated

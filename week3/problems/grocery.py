@@ -1,3 +1,5 @@
+import sys
+
 GROCERY_LIST = []
 def main():  
     while True:
@@ -6,7 +8,7 @@ def main():
             make_list(item)
         except EOFError:
             show_list()
-            exit()
+            sys.exit()
 
 
 def make_list(list_item):
@@ -19,8 +21,9 @@ def show_list():
     output_list.sort()
     for item in output_list:
         num_of_item = GROCERY_LIST.count(item)
-        print(f"{num_of_item} - {item}")
+        print(f"{num_of_item} {item}")
 
 main()
 
+# PASS
 # check50 --local cs50/problems/2022/python/grocery

@@ -1,26 +1,15 @@
-TOTAL_COST = 0
-
 def main():
-    with open("taqueria.txt", "r", encoding="utf-8") as file:
-        ascii_logo = file.read()
-        print(ascii_logo)
+    total = 0
     while True:
         try:
-            item = input("What would you like to order? ")
-            update_order(item)
+            item = input("Item: ")
+            item = item.title().strip()
+            if item in menu:
+                price = menu[item]
+                total += price
+                print(f"Total: ${total:.2f}")
         except EOFError:
-            print("Thanks for ordering!")
-            exit()
-
-def update_order(item):
-    global TOTAL_COST
-    item = item.title().strip()
-    if item in menu:
-        price = menu[item]
-        TOTAL_COST += price
-        print(f"Total: ${TOTAL_COST:.2f}")
-    else:
-        print("Looks like that isn't on the menu.")
+            break
 
 menu = {
     "Baja Taco": 4.25,
@@ -34,4 +23,8 @@ menu = {
     "Tortilla Salad": 8.00
 }
 
-main()
+if __name__ == "__main__":
+    main()
+
+# PASS
+# check50 --local cs50/problems/2022/python/taqueria

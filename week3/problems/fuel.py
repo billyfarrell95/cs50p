@@ -4,23 +4,23 @@ def main():
         status = convert_to_percent(fraction_str)
         if status is not None:
             print(status)
+            break
 
 def convert_to_percent(fraction_str):
-    num, denom = fraction_str.split("/")
     try:
+        num, denom = fraction_str.split("/")
         percent = (int(num) / int(denom)) * 100
         percent = round(percent)
-            
-    except (ValueError, ZeroDivisionError):
-        pass
-    else:
         if percent <= 1:
             return "E"
         elif percent >= 99 and percent <= 100:
             return "F"
-        elif percent <= 100:
+        elif percent < 99:
             return f"{percent}%"
+    except (ValueError, ZeroDivisionError):
+        pass
 
 main()
 
+# PASS
 # check50 --local cs50/problems/2022/python/fuel
