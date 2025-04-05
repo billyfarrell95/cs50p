@@ -12,6 +12,7 @@ def main():
              print_figlet(message, font)
         else:
              print("Invalid usage")
+             sys.exit(1)
     elif len(sys.argv) == 1:
         font = random.choice(figlet_fonts)
         if font in figlet_fonts:
@@ -21,11 +22,15 @@ def main():
              print("Invalid usage")
     else:
         print("Invalid usage")
-        sys.exit()
+        sys.exit(1)
 
 def print_figlet(s, f):
         figlet.getFonts()
         figlet.setFont(font=f)
         print(figlet.renderText(s))
 
-main()
+if __name__ == "__main__":
+    main()
+
+# PASS
+# check50 --local cs50/problems/2022/python/figlet

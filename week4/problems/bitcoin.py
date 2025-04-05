@@ -1,27 +1,23 @@
 import sys, requests
 
 def main():
-    if len(sys.argv) == 2:
-        try:
-            qty = float(sys.argv[1])
-            get_bitcoin(qty)
-        except ValueError:
-            print("Command-line argument is not a number")
-            sys.exit()
-    else:
-        print("Missing command-line argument")
-        sys.exit()
+    if len(sys.argv) != 2:
+        sys.exit(1)
+    try:
+        qty = float(sys.argv[1])
+        print(f"${get_bitcoin(qty)}")
+    except ValueError:
+        sys.exit(1)
 
 def get_bitcoin(n):
     try:
         url = "https://api.coincap.io/v2/assets/bitcoin"
-        print(f"Fetching price of {n} Bitcoin(s)...\n")
         r = requests.get(url)
         r_json = r.json()
         price = r_json["data"]["priceUsd"]
         f_price = float(price)
         o_price = round(f_price * n, 4)
-        print(f"Price for {n} Bitcoin: ${o_price:,.2f}")
+        return f"{o_price:,.4f}"
 
     except requests.RequestException:
         print("Error fetching")
@@ -31,3 +27,6 @@ def get_bitcoin(n):
 
 if __name__ == "__main__":
     main()
+
+# PASS
+# check50 --local cs50/problems/2022/python/bitcoin

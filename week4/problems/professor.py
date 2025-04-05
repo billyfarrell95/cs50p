@@ -3,6 +3,7 @@ import random
 def main():
     level = get_level()
     answered = 0
+    correct = 0
     while answered < 10:
         tries = 0
         n1 = generate_integer(level)
@@ -11,17 +12,18 @@ def main():
             try:
                 answer = int(input(f"{n1} + {n2} = "))
                 if answer == (n1 + n2):
-                    print("Correct!")
+                    correct += 1
                     break
                 else:
                     tries += 1
                     if tries < 3:
-                        print("Incorrect, try again")
+                        print("EEE")
                     else:
                         print(f"The answer is: {n1 + n2}")
             except ValueError:
                 print("Invalid input, please enter a number")
         answered += 1
+    print(f"Answered correctly: {correct}")
 
 def get_level():
     while True:
@@ -40,7 +42,8 @@ def generate_integer(level):
         case 3:
             return random.randint(100, 999)
 
-
-
 if __name__ == "__main__":
     main()
+
+# PASS
+# check50 --local cs50/problems/2022/python/professor

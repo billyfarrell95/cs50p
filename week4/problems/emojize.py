@@ -1,8 +1,11 @@
 import emoji
 
 def main():
-    while True:
-        emoji_input = input("Input: ")
-        print(emoji.emojize(emoji_input, language='alias'))
+    emoji_input = input("Input: ")
+    print(emoji.emojize(emoji_input, language='alias'))
 
-main()
+if __name__ == "__main__":
+    main()
+
+# PASS
+# check50 --local cs50/problems/2022/python/emojize

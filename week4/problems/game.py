@@ -32,4 +32,8 @@ def guess(n):
         except ValueError:
             pass
 
-main()
+if __name__ == "__main__":
+    main()
+
+# PASS
+# check50 --local cs50/problems/2022/python/game
