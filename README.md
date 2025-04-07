@@ -6,11 +6,9 @@
 
 ## Week 1
 [Week 1 - Conditionals](https://github.com/billyfarrell95/cs50p/tree/main/week1)
-- meal.py FAILS
 
 ## Week 2
 [Week 2 - Loops](https://github.com/billyfarrell95/cs50p/tree/main/week2)
-- coke.py FAILS
 
 ## Week 3
 [Week 3 - Exceptions](https://github.com/billyfarrell95/cs50p/tree/main/week3)
@@ -31,8 +29,7 @@
 [Week 8 - Object Oriented Programming](https://github.com/billyfarrell95/cs50p/tree/main/week8)
 
 ## Week 9
-[Week 9 - Et Cetera](https://cs50.harvard.edu/python/2022/weeks/9/)
-
+[Week 9 - Et Cetera]()
 
 ## Final Projects
-[Final Project](https://cs50.harvard.edu/python/2022/project/)
+[Final Project]()

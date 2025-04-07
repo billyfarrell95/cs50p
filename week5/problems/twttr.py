@@ -5,10 +5,10 @@ def main():
 
 
 def shorten(string):
-    vowels = ["a", "e", "i", "o", "u"]
+    vowels = ["a", "e", "i", "o", "u", "A", "E", "I", "O", "U"]
     no_vowels = string
     for vowel in vowels:
-        if vowel in string.lower():
+        if vowel in string:
             no_vowels = no_vowels.replace(vowel, "")
     return no_vowels
 

@@ -1,44 +1,30 @@
 import sys, os
 from PIL import Image, ImageOps
 
-# todo: validation
-# - validation message for incorrect output
-# - different messages for input/output
-# - Input does not exist message
 def main():
     if len(sys.argv) == 3:
-        shirt = sys.argv[1].strip()
-        background = sys.argv[2].strip()
-        if validate_file_types(shirt, background):
-            create_image(shirt, background)
+        input = sys.argv[1].strip()
+        output = sys.argv[2].strip()
+        if validate_file_types(input, output):
+            create_image(input, output)
         else:
-            print("File type error: Input and Output files types must match.")
-            sys.exit()
+            sys.exit("File type error: Input and Output files types must match.")
     elif len(sys.argv) > 3:
-        print("To many command-line arguments")
-        sys.exit()
+        sys.exit("To many command-line arguments")
     else:
-        print("To few command-line arguments")
-        sys.exit()
+        sys.exit("To few command-line arguments")
 
-def create_image(shirt, background):
+def create_image(input, output):
     try:
-        if not os.path.exists(shirt):
-            print(f"Error: The file {shirt} does not exist.")
-            sys.exit()
-        if not os.path.exists(background):
-            print(f"Error: The file {background} does not exist.")
-            sys.exit()
-        
-        image1 = Image.open(shirt)
-        image2 = Image.open(background)
-        image2_resized = ImageOps.fit(image2, size=(300, 300))
-        image1_resized = ImageOps.fit(image1, size=(300, 300))
-        image2_resized.paste(image1_resized, (0, 0), image1_resized.convert('RGBA'))
-        output_image_path = "output.png"
-        image2_resized.save(output_image_path)
+        if not os.path.exists(input):
+            sys.exit(f"Error: The file {input} does not exist.")
+        shirt_image = Image.open("shirt.png")
+        with Image.open(input) as image:
+            image = ImageOps.fit(image, shirt_image.size)
+            image.paste(shirt_image, mask = shirt_image)
+            image.save(output)
     except FileNotFoundError:
-        print("File not found")
+        sys.exit("File not found")
 
 def validate_file_types(input, output):
     if input.endswith(".jpg") and output.endswith(".jpg"):

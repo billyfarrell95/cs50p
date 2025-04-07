@@ -1,29 +1,27 @@
 def main():
-    while True:
-        fraction_str = input("Fraction (X/Y): ")
-        status = convert(fraction_str)
-        if status is not None:
-            print(status)
-
+    fraction_str = input("Fraction (X/Y): ")
+    status = convert(fraction_str)
+    print(gauge(status))
 
 def convert(fraction):
-    num, denom = fraction.split("/")
     try:
-        percent = (int(num) / int(denom)) * 100
-        percent = round(percent)
-        return gauge(percent)
-    except (ValueError, ZeroDivisionError):
-        pass
-
+        num, denom = fraction.split('/')
+        num, denom = int(num), int(denom)
+        if denom == 0:
+            raise ZeroDivisionError
+        if num > denom:
+            raise ValueError
+        return round((num / denom) * 100)
+    except (ValueError):
+        raise ValueError("Invalid")
 
 def gauge(percentage):
     if percentage <= 1:
         return "E"
-    elif percentage >= 99 and percentage <= 100:
+    elif percentage >= 99:
         return "F"
     elif percentage <= 100:
         return f"{percentage}%"
-
 
 if __name__ == "__main__":
     main()

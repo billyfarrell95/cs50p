@@ -37,7 +37,7 @@ def format_date(date_string):
                         return f"{year}-{str(month_index).zfill(2)}-{str(day).zfill(2)}"
             else:
                 raise ValueError("Invalid date format")
-                
+
         except ValueError:
             raise ValueError("Invalid date format")
     else:
@@ -53,6 +53,3 @@ def format_date(date_string):
             raise ValueError(f"Invalid date format: {e}")
 
 main()
-
-# PASS
-# check50 --local cs50/problems/2022/python/outdated

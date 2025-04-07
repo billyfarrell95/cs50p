@@ -7,13 +7,13 @@ def main():
             print(count_lines(f))
         else:
             print("Not a Python file")
-            sys.exit()
+            sys.exit(1)
     elif len(sys.argv) > 2:
         print("To many command-line arguments")
-        sys.exit()
+        sys.exit(1)
     else:
         print("To few command-line arguments")
-        sys.exit()
+        sys.exit(1)
 
 def count_lines(f_path):
     num = 0

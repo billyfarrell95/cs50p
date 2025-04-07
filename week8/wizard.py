@@ -1,4 +1,3 @@
-
 class Wizard:
     def __init__(self, name):
         if not name:

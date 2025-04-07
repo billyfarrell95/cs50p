@@ -9,24 +9,21 @@ def main():
             print(output)
         else:
             print("Not a CSV file")
-            sys.exit()
+            sys.exit(1)
     elif len(sys.argv) > 2:
         print("To many command-line arguments")
-        sys.exit()
+        sys.exit(1)
     else:
         print("To few command-line arguments")
-        sys.exit()
+        sys.exit(1)
 
 def output_csv_as_table(f_path):
-    menu = []
     try:
         with open(f_path) as file:
-            reader = csv.reader(file)
-            for row in reader:
-                menu.append(row)
-            return tabulate(menu, tablefmt="grid")
+            reader = csv.DictReader(file)
+            return tabulate(reader, headers="keys", tablefmt="grid")
     except FileNotFoundError:
-        return "File does not exist"
+        sys.exit("File does not exist")
 
 if __name__ == "__main__":
     main()

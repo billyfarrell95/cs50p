@@ -8,6 +8,3 @@ def convert(user_input):
     return converted
 
 main()
-
-# PASS
-# check50 --local cs50/problems/2022/python/faces

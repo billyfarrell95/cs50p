@@ -11,6 +11,5 @@ def main():
         else:
             print("Invalid")
     
-
 if __name__ == "__main__":
     main()

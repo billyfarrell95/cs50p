@@ -12,6 +12,3 @@ def get_calories(s):
         return ""
 
 main()
-
-# PASS
-# check50 --local cs50/problems/2022/python/nutrition

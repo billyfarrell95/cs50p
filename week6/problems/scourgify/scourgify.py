@@ -7,14 +7,11 @@ def main():
             o = sys.argv[2].strip()
             create_cleaned_file(f, o)
         else:
-            print("Not a CSV file")
-            sys.exit()
+            sys.exit("Not a CSV file")
     elif len(sys.argv) > 3:
-        print("To many command-line arguments")
-        sys.exit()
+        sys.exit("To many command-line arguments")
     else:
-        print("To few command-line arguments")
-        sys.exit()
+        sys.exit("To few command-line arguments")
 
 def create_cleaned_file(f_path, o_name):
     new_data = []
@@ -31,10 +28,9 @@ def create_cleaned_file(f_path, o_name):
                 new_data.append(student)
 
     except FileNotFoundError:
-        print("Input file does not exist")
-        sys.exit()
-    
-    with open(f"{o_name}", "a") as file:
+        sys.exit("Input file does not exist")
+
+    with open(f"{o_name}", "w") as file:
         fieldnames = ["first", "last", "house"]
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()

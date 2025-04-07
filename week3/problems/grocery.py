@@ -1,7 +1,7 @@
 import sys
 
 GROCERY_LIST = []
-def main():  
+def main():
     while True:
         try:
             item = input("")
@@ -24,6 +24,3 @@ def show_list():
         print(f"{num_of_item} {item}")
 
 main()
-
-# PASS
-# check50 --local cs50/problems/2022/python/grocery

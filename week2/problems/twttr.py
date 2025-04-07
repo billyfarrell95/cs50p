@@ -12,6 +12,3 @@ def remove_vowels(string):
     return no_vowels
 
 main()
-
-# PASS
-# check50 --local cs50/problems/2022/python/twttr

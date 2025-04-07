@@ -4,6 +4,3 @@ def main():
     print("E: ", E)
 
 main()
-
-# PASS
-# check50 --local cs50/problems/2022/python/einstein

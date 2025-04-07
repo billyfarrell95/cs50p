@@ -1,46 +1,40 @@
 from string import punctuation
 def main():
-    while True:
-        plate = input("Plate: ")
-        if is_valid(plate):
-            print("Valid")
-        else:
-            print("Invalid")
+    plate = input("Plate: ")
+    if is_valid(plate):
+        print("Valid")
+    else:
+        print("Invalid")
 
 def does_start_two_letters(s):
-    if s[0].isalpha() and s[1].isalpha():
+    return len(s) >= 2 and s[0].isalpha() and s[1].isalpha()
+
+def validate_len(s):
+    if (len(s) > 1 and len(s) < 7):
         return True
     else:
         return False
 
-def is_valid_len(s):
-    if (len(s) > 1 and len(s) < 7):
-        return True
-    else: 
-        return False
-
-def has_valid_num_order(s):
+def is_first_num_zero(s):
     for c in s:
         if c.isnumeric():
-            if int(c) > 0:
-                return True
-            else:
-                return False
-            
-def has_valid_nums_pos(s):
-    for c in s:
-        if c.isnumeric() and s[-1].isalpha():
-            return False
-        else: 
-            return True
+            return c == '0'
+    return False
 
-def has_no_punc(s):
-    no_punc = True
+def has_nums_in_middle(s):
+    found_num = False
+    for c in s:
+        if c.isnumeric():
+            found_num = True
+        elif found_num and c.isalpha():
+            return True
+    return False
+
+def has_punct(s):
     for p in punctuation:
         if p in s:
-            no_punc = False
-            break
-    return no_punc
+            return True
+    return False
 
 def is_valid(s):
     """
@@ -51,13 +45,22 @@ def is_valid(s):
     First num used can't be 0
     No periods, spaces, or punctuation marks
     """
-    valid_len = is_valid_len(s)
-    if valid_len:
-        start_two_letters = does_start_two_letters(s[:2])
-        valid_num_order = has_valid_num_order(s)
-        valid_num_pos = has_valid_nums_pos(s[2:])
-        has_no_punctuation = has_no_punc(s)
-        if start_two_letters and valid_num_order and valid_num_pos and has_no_punctuation:
-            return True
+    if not does_start_two_letters(s[:2]):
+        return False
+
+    if not validate_len(s):
+        return False
+
+    if is_first_num_zero(s):
+        return False
+
+    if has_nums_in_middle(s[2:]):
+        return False
+
+    if has_punct(s):
+        return False
+
+    return True
+
 if __name__ == "__main__":
     main()

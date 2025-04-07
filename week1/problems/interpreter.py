@@ -17,6 +17,3 @@ def calc(num1, operation, num2):
         case _:
             print("Invalid operation. Use: +, -, *, or /")
 main()
-
-# PASS
-# check50 --local cs50/problems/2022/python/interpreter
