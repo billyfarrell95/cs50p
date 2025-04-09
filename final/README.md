@@ -9,3 +9,26 @@
 * You are welcome to implement additional classes and functions as you see fit beyond the minimum requirement.
 * Implementing your project should entail more time and effort than is required by each of the course’s problem sets.
 Any `pip`-installable libraries that your project requires must be listed, one per line, in a file called `requirements.txt` in the root of your project.
+
+
+* Create DB if it does not exist
+    * Create table
+        * id (auto generated)
+        * name
+        * purchase price
+        * purchase date
+        * purchase locations
+* User input
+    * Add item
+        * Add to DB
+        * Prints the item that was added
+        * Continues prompting until cancelled
+    * Delete item
+        * Delete from DB by ID
+        * Continues prompting until cancelled
+    * View items
+        * HTML?
+        * Export as CSV
+    * Clear history, does not exit program
+    * Exit with message
+    * Cancels the current operation (delete, add)
