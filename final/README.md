@@ -17,7 +17,7 @@ Any `pip`-installable libraries that your project requires must be listed, one p
         * name
         * purchase price
         * purchase date
-        * purchase locations
+        * purchase location
 * User input
     * Add item
         * Add to DB
