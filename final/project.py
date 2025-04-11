@@ -1,7 +1,11 @@
-import sqlite3, os, time, webbrowser
+import sqlite3, os, time, webbrowser, re
 from tabulate import tabulate
 
 def connect_db():
+    """
+    Return db connection
+    Create if it doesn't exist
+    """
     return sqlite3.connect("db.sqlite3")
 
 def add_data(item):
@@ -86,56 +90,82 @@ def clear_history():
     except:
         pass
 
+def validate_date(str):
+    """
+    Return True if date matches YYYY-MM-DD format
+    """
+    return re.match(r"^(\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\d|3[0-1])$", str)
+
 def get_input():
     """
     Handles getting user input and calling CRUD functions
     """
     while True:
-        print("(v)iew, (a)dd, (d)elete, (c)lear, or (e)xit")
+        print("(v)iew, (a)dd, (d)elete, (cl)ear, or (e)xit")
         action = input("What would you like to do? ").strip().lower()
-        
+        canceled = False
         if action == "v":
             view_data()
         elif action == "a":
             item = []
-            fields = ["Name", "Purchase date", "Purchase price", "Purchase location"]
+            fields = ["name", "date", "price", "location"]
+            print("(c) to cancel operation")
             for field in fields:
                 while True:
-                    input_val = input(f"{field}: ").strip()
-                    if input_val == "e":
-                        print("Cancelling...")
-                        break 
-                    elif input_val:
-                        item.append(input_val)
-                        break
-                    else:
-                        print(f"{field} required")
-                if input_val == "e":
+                    if field == "name" or field == "location":
+                        input_val = input(f"{field}: ").strip()
+                        if input_val == "c":
+                            canceled = True
+                            break 
+                        elif input_val:
+                            item.append(input_val)
+                            break
+                        else:
+                            print(f"{field} required")
+                    if field == "date":
+                        input_val = input(f"{field}: ").strip()
+                        if input_val == "c":
+                            canceled = True
+                            break 
+                        elif validate_date(input_val):
+                            item.append(input_val)
+                            break
+                        else:
+                            print(f"{field} required. YYYY-MM-DD")
+                    if field == "price":
+                        input_val = input(f"{field}: ").strip()
+                        if input_val == "c":
+                            canceled = True
+                            break 
+                        elif input_val:
+                            try:
+                                item.append(float(input_val))
+                                break
+                            except ValueError:
+                                print(f"{field} required. Enter a number, e.g. 120 or 120.25")
+                if canceled:
+                    print("Canceled adding item.")
                     break
 
             if input_val != "e" and len(item) == 4:
                 add_data(item)
-            elif input_val == "e":
-                continue 
 
         elif action == "d":
-            while True:
-                input_val = input("ID to delete: ").strip()
-                if input_val == "e":
-                    print("Cancelling...")
-                    break 
-                elif input_val:
-                    try:
-                        id = int(input_val)
-                        delete_data(id)
-                        break
-                    except ValueError:
-                        print("ID must be a number")
-                else:
-                    print("ID is required")
-            if input_val == "e":
-                break
-        elif action == "c":
+            print("(c) to cancel operation")
+            input_val = input("ID to delete: ").strip()
+            if input_val == "c":
+                print("Canceled operation")
+                continue 
+            elif input_val:
+                try:
+                    id = int(input_val)
+                    delete_data(id)
+                except ValueError:
+                    print("ID must be a number")
+            else:
+                print("ID is required")
+
+        elif action == "cl":
             clear_history()
         elif action == "e":
             print("Exiting...")
