@@ -1,6 +1,10 @@
 import sqlite3, os, time, webbrowser, re
 from tabulate import tabulate
 
+class NoSearchResults(Exception):
+    def __str__(self):
+        return "No results found for that search"
+    
 def connect_db():
     """
     Return db connection
@@ -38,7 +42,10 @@ def delete_data(id):
     except:
         print("Error deleting item")
 
-def view_data():
+def format_rows_as_table(list):
+    return tabulate(list, headers=["ID", "Item name", "Date", "Price", "Purchase Location"], tablefmt="rounded_grid")
+
+def view_and_export_data():
     """
     Prints db data in table
     Sends formatted data to be exported as html
@@ -49,10 +56,10 @@ def view_data():
         if data != None:
             table = []
             for row in data:
-                id, name, date, price, location = row[0], row[1].title(), row[2], row[3], row[4].title()
+                id, name, date, price, location = row[0], row[1], row[2], row[3], row[4]
                 row = [id, name, date, price, location]
                 table.append(row)
-            print(tabulate(table, headers=["ID", "Item name", "Date", "Price", "Purchase Location"], tablefmt="rounded_grid"))
+            print(format_rows_as_table(table))
             html = tabulate(table, headers=["ID", "Item name", "Date", "Price", "Purchase Location"], tablefmt="html")
             export_html(html)
         else:
@@ -96,16 +103,36 @@ def validate_date(str):
     """
     return re.match(r"^(\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\d|3[0-1])$", str)
 
+def search(str):
+    with connect_db() as con:
+        try:
+            cur = con.cursor()
+            query = "SELECT * FROM items WHERE name LIKE CONCAT('%', ?, '%')"
+            cur.execute(query, (str,))
+            rows = cur.fetchall()
+            if rows:
+                print("Found:")
+                table = []
+                for row in rows:
+                    id, name, date, price, location = row[0], row[1], row[2], row[3], row[4]
+                    row = [id, name, date, price, location]
+                    table.append(row)
+                print(format_rows_as_table(table))
+            else:
+                print("No items found")
+        except sqlite3.OperationalError as e:
+            print(e)
+
 def get_input():
     """
     Handles getting user input and calling CRUD functions
     """
     while True:
-        print("(v)iew, (a)dd, (d)elete, (cl)ear, or (e)xit")
+        print("(v)iew, (a)dd, (d)elete, (s)earch, (cl)ear, or (e)xit")
         action = input("What would you like to do? ").strip().lower()
         canceled = False
         if action == "v":
-            view_data()
+            view_and_export_data()
         elif action == "a":
             item = []
             fields = ["name", "date", "price", "location"]
@@ -113,7 +140,7 @@ def get_input():
             for field in fields:
                 while True:
                     if field == "name" or field == "location":
-                        input_val = input(f"{field}: ").strip()
+                        input_val = input(f"{field}: ").strip().lower()
                         if input_val == "c":
                             canceled = True
                             break 
@@ -164,7 +191,16 @@ def get_input():
                     print("ID must be a number")
             else:
                 print("ID is required")
-
+        elif action == "s":
+            print("(c) to cancel operation")
+            input_val = input("Search for: ").strip()
+            if input_val == "c":
+                print("Canceled operation")
+                continue
+            elif input_val:
+                search(input_val)
+            else:
+                print("Enter a search term")
         elif action == "cl":
             clear_history()
         elif action == "e":
