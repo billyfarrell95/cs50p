@@ -32,4 +32,4 @@
 [Week 9 - Et Cetera]()
 
 ## Final Projects
-[Final Project]()
+[Final Project](https://github.com/billyfarrell95/cs50p/blob/main/final/)
