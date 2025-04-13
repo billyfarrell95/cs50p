@@ -1,9 +1,5 @@
 import sqlite3, os, time, webbrowser, re
 from tabulate import tabulate
-
-class NoSearchResults(Exception):
-    def __str__(self):
-        return "No results found for that search"
     
 def connect_db():
     """
@@ -39,36 +35,66 @@ def delete_data(id):
                 print("Item deleted")
             else:
                 print("ID not found")
-    except:
-        print("Error deleting item")
+    except sqlite3.OperationalError as e:
+        print(e)
 
 def format_rows_as_table(list):
+    """
+    Return data as formatted table using tabulate
+    """
     return tabulate(list, headers=["ID", "Item name", "Date", "Price", "Purchase Location"], tablefmt="rounded_grid")
 
-def view_and_export_data():
+def format_data_as_list(data):
+    """
+    Returns db data in list
+    """
+    list = []
+    for row in data:
+        id, name, date, price, location = row[0], row[1], row[2], row[3], row[4]
+        row = [id, name, date, price, location]
+        list.append(row)
+    return list
+
+def view_data():
     """
     Prints db data in table
-    Sends formatted data to be exported as html
     """
     with connect_db() as con:
-        cur = con.cursor()
-        data = cur.execute("SELECT * FROM items")
-        if data != None:
-            table = []
-            for row in data:
-                id, name, date, price, location = row[0], row[1], row[2], row[3], row[4]
-                row = [id, name, date, price, location]
-                table.append(row)
-            print(format_rows_as_table(table))
-            html = tabulate(table, headers=["ID", "Item name", "Date", "Price", "Purchase Location"], tablefmt="html")
-            export_html(html)
-        else:
-            print("No items in db")
+        try:
+            cur = con.cursor()
+            data = cur.execute("SELECT * FROM items")
+            if data != None:
+                data_list = format_data_as_list(data)
+                print(format_rows_as_table(data_list))
+            else:
+                print("No items in db")
+        except sqlite3.OperationalError as e:
+            print(e)
 
-def export_html(html_data):
+def export_data():
     """
-    Creates/updates html file with db data
+    Handle exporting data
     """
+    with connect_db() as con:
+        try:
+            cur = con.cursor()
+            data = cur.execute("SELECT * FROM items")
+            if data != None:
+                table = format_data_as_list(data)
+                html = tabulate(table, headers=["ID", "Item name", "Date", "Price", "Purchase Location"], tablefmt="html")
+                create_html(html)
+            else:
+                print("No items in db")
+        except sqlite3.OperationalError as e:
+            print(e)
+
+def create_html(html):
+    """
+    Handle exporting data
+    Format as HTML during export
+    Let user choose to open the export HTML file
+    """
+    html = html.replace("<table>", "<table class='table'>")
     with open("output.html", "w") as file:
         file.write("<html>")
         file.write("<head>")
@@ -76,10 +102,18 @@ def export_html(html_data):
         file.write("<title>Exported Data</title>")
         file.write("</head>")
         file.write("<body>")
-        file.write(html_data)
+        file.write(html)
         file.write("</body>")
         file.write("</html>")
-    webbrowser.open("output.html", new=0)
+    while True:
+        open_file = input("output.html created. Open? (y/n) ").strip()
+        if open_file.lower() == "y":
+            webbrowser.open("output.html", new=0)
+            break
+        elif open_file.lower() == "n":
+            break
+        else:
+            print("Invalid input. Enter (y/n)")
 
 def clear_history():
     """
@@ -104,6 +138,9 @@ def validate_date(str):
     return re.match(r"^(\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\d|3[0-1])$", str)
 
 def search(str):
+    """
+    Print items from db based on name that contain search string
+    """
     with connect_db() as con:
         try:
             cur = con.cursor()
@@ -119,7 +156,7 @@ def search(str):
                     table.append(row)
                 print(format_rows_as_table(table))
             else:
-                print("No items found")
+                print(f"No items found for '{str}'")
         except sqlite3.OperationalError as e:
             print(e)
 
@@ -128,11 +165,11 @@ def get_input():
     Handles getting user input and calling CRUD functions
     """
     while True:
-        print("(v)iew, (a)dd, (d)elete, (s)earch, (cl)ear, or (e)xit")
+        print("(v)iew, (a)dd, (d)elete, (s)earch, (cl)ear, (ex)port or (e)xit")
         action = input("What would you like to do? ").strip().lower()
         canceled = False
         if action == "v":
-            view_and_export_data()
+            view_data()
         elif action == "a":
             item = []
             fields = ["name", "date", "price", "location"]
@@ -193,16 +230,18 @@ def get_input():
                 print("ID is required")
         elif action == "s":
             print("(c) to cancel operation")
-            input_val = input("Search for: ").strip()
+            input_val = input("Search for item name: ").strip()
             if input_val == "c":
                 print("Canceled operation")
                 continue
             elif input_val:
                 search(input_val)
             else:
-                print("Enter a search term")
+                print("Search term required")
         elif action == "cl":
             clear_history()
+        elif action == "ex":
+            export_data()
         elif action == "e":
             print("Exiting...")
             break
@@ -211,17 +250,20 @@ def get_input():
 
 def main():
     with connect_db() as con:
-        cur = con.cursor()
-        cur.execute('''
-        CREATE TABLE IF NOT EXISTS items (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT,
-            purchase_date TEXT,
-            purchase_price TEXT,
-            purchase_location TEXT
-        )
-        ''')
-        get_input()
+        try:
+            cur = con.cursor()
+            cur.execute('''
+            CREATE TABLE IF NOT EXISTS items (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT,
+                purchase_date TEXT,
+                purchase_price TEXT,
+                purchase_location TEXT
+            )
+            ''')
+            get_input()
+        except sqlite3.OperationalError as e:
+            print(e)
 
 if __name__ == "__main__":
     main()
