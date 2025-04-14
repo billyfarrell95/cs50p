@@ -135,7 +135,7 @@ def validate_date(str):
     """
     Return True if date matches YYYY-MM-DD format
     """
-    return re.match(r"^(\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\d|3[0-1])$", str)
+    return bool(re.match(r"^(\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\d|3[0-1])$", str))
 
 def search(str):
     """
