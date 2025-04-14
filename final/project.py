@@ -1,4 +1,4 @@
-import sqlite3, os, time, webbrowser, re
+import sqlite3, os, time, webbrowser, re, platform
 from tabulate import tabulate
     
 def connect_db():
@@ -138,7 +138,17 @@ def create_html(html):
         open_file = input("output.html created. Open? (y/n) ").strip()
         if open_file.lower() == "y":
             try:
-                webbrowser.open("output.html", new=0)
+                print("Opening...")
+                time.sleep(0.5)
+                plat = platform.system()
+                abs_path = os.path.abspath("output.html")
+                if plat in ("Linux", "Darwin"):
+                    webbrowser.open(f"file://{abs_path}", new=0)
+                    print(abs_path, "Mac or Linux")
+                elif plat == "Windows":
+                    webbrowser.open(abs_path, new=0)
+                    print(abs_path, "Windows")
+                
                 break
             except webbrowser.Error as e:
                 print(e)
