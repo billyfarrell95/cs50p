@@ -4,7 +4,6 @@ from tabulate import tabulate
 def connect_db():
     """
     Return db connection
-    Create if it doesn't exist
     """
     return sqlite3.connect("db.sqlite3")
 
@@ -22,7 +21,7 @@ def add_data(item):
 def delete_data(id):
     """
     Accepts id as an int
-    Deletes specified item from db
+    Deletes specified item from db if it exists
     """
     try:
         with connect_db() as con:
@@ -33,6 +32,24 @@ def delete_data(id):
                 cur.execute(f"DELETE FROM items WHERE rowid={id}")
                 con.commit()
                 print("Item deleted")
+            else:
+                print("ID not found")
+    except sqlite3.OperationalError as e:
+        print(e)
+
+def update_data(id):
+    """
+    Accepts id as an int
+    Allows updating of item in db if it exists
+    """
+    try:
+        with connect_db() as con:
+            cur = con.cursor()
+            cur.execute("SELECT * FROM items WHERE rowid = ?", (id,))
+            row = cur.fetchone() or None
+            if not row == None:
+                # TODO: add update functionality
+                print("Item to update:", row)
             else:
                 print("ID not found")
     except sqlite3.OperationalError as e:
@@ -73,7 +90,7 @@ def view_data():
 
 def export_data():
     """
-    Handle exporting data
+    Formats db data as HTML
     """
     with connect_db() as con:
         try:
@@ -90,9 +107,8 @@ def export_data():
 
 def create_html(html):
     """
-    Handle exporting data
-    Format as HTML during export
-    Let user choose to open the export HTML file
+    Writes the formatted HTML data from export_data to the output file
+    Prompts user whether they would like to open output file
     """
     html = html.replace("<table>", "<table class='table'>")
     with open("output.html", "w") as file:
@@ -105,11 +121,15 @@ def create_html(html):
         file.write(html)
         file.write("</body>")
         file.write("</html>")
+    #TODO: Make sure opening works on MacOS and Windows
     while True:
         open_file = input("output.html created. Open? (y/n) ").strip()
         if open_file.lower() == "y":
-            webbrowser.open("output.html", new=0)
-            break
+            try:
+                webbrowser.open("output.html", new=0)
+                break
+            except webbrowser.Error as e:
+                print(e)
         elif open_file.lower() == "n":
             break
         else:
@@ -133,13 +153,13 @@ def clear_history():
 
 def validate_date(str):
     """
-    Return True if date matches YYYY-MM-DD format
+    Return True if date matches regex for YYYY-MM-DD format
     """
     return bool(re.match(r"^(\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\d|3[0-1])$", str))
 
 def search(str):
     """
-    Print items from db based on name that contain search string
+    Finds item in db in which the name contains a match to the str param
     """
     with connect_db() as con:
         try:
@@ -165,7 +185,7 @@ def get_input():
     Handles getting user input and calling CRUD functions
     """
     while True:
-        print("(v)iew, (a)dd, (d)elete, (s)earch, (cl)ear, (ex)port or (e)xit")
+        print("(v)iew, (a)dd, (d)elete, (u)pdate, (s)earch, (cl)ear, (ex)port or (e)xit")
         action = input("What would you like to do? ").strip().lower()
         canceled = False
         if action == "v":
@@ -224,6 +244,20 @@ def get_input():
                 try:
                     id = int(input_val)
                     delete_data(id)
+                except ValueError:
+                    print("ID must be a number")
+            else:
+                print("ID is required")
+        elif action == "u":
+            print("(c) to cancel operation")
+            input_val = input("ID to update: ").strip()
+            if input_val == "c":
+                print("Canceled operation")
+                continue 
+            elif input_val:
+                try:
+                    id = int(input_val)
+                    update_data(id)
                 except ValueError:
                     print("ID must be a number")
             else:
