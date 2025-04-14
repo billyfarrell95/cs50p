@@ -1,34 +1,41 @@
 # CS50P Final Project
 
 ## Requirements
-* Your project must be implemented in Python.
-* Your project must have a `main` function and three or more additional functions. At least three of those additional functions must be accompanied by tests that can be executed with `pytest`.
-    * Your `main` function must be in a file called `project.py`, which should be in the “root” (i.e., top-level folder) of your project.
-    * Your 3 required custom functions other than `main` must also be in `project.py` and defined at the same indentation level as `main` (i.e., not nested under any classes or functions).
-    * Your test functions must be in a file called `test_project.py`, which should also be in the “root” of your project. Be sure they have the same name as your custom functions, prepended with `test_` (`test_custom_function`, for example, where `custom_function` is a function you’ve implemented in `project.py`).
-* You are welcome to implement additional classes and functions as you see fit beyond the minimum requirement.
-* Implementing your project should entail more time and effort than is required by each of the course’s problem sets.
-Any `pip`-installable libraries that your project requires must be listed, one per line, in a file called `requirements.txt` in the root of your project.
+[View project requirements](https://cs50.harvard.edu/python/2022/project/)
 
-
-* Create DB if it does not exist
-    * Create table
-        * id (auto generated)
-        * name
-        * purchase price
-        * purchase date
-        * purchase location
-* User input
-    * Add item
-        * Add to DB
-        * Prints the item that was added
-        * Continues prompting until cancelled
-    * Delete item
-        * Delete from DB by ID
-        * Continues prompting until cancelled
-    * View items
-        * HTML?
-        * Export as CSV
-    * Clear history, does not exit program
-    * Exit with message
-    * Cancels the current operation (delete, add)
+## Functionality
+* Create SQLite Database
+    * Create table for ```items```
+        * ```id``` (auto generated)
+        * ```name```
+        * ```purchase_price```
+        * ```purchase_date```
+        * ```purchase_location```
+* Get user input and run actions
+    * Provide usage instructions: ```(v)iew, (a)dd, (d)elete, (s)earch, (cl)ear, (ex)port or (e)xit```
+    * View data
+        1. Formats database rows as table by converting a ```list``` to a table using ```tabulate``` and prints the list
+    * Add data
+        1. Accepts and validates name, date, price and location
+        2. Adds the validated input item to a list
+        3. Executes ```INSERT``` to add the ```item``` to the ```items``` database table
+    * Delete data
+        1. Gets input for an ```id``` and validates it is an ```int```
+        2. Checks if a row with ```id``` exists before executing ```DELETE```
+    * Update data
+        1. TODO
+    * Search for data based on item ```name```
+        1. Gets input for search term and validates the ```str```
+        2. Query the database: ```SELECT * FROM items WHERE name LIKE CONCAT('%', ?, '%')``` and fetches the data
+        3. Prints the data in a table or a "No items found message"
+    * Clear user input history
+        1. Clears user input history using ```os.system("cls")``` or ```os.system("clear")```
+    * Export data
+        1. Queries all of data in the database
+        2. Formats as an ```HTML``` table using ```tabulate```
+        3. Creates or updates the ```HTML``` file as ```output.html```
+        4. Asks the user if they would like to open. If so, opens using: ```webbrowser.open("output.html", new=0)```
+    * Exit the script
+        1. The user can input ```e``` from the main menu level to exit the script
+    * Cancel action
+        1. While adding, deleting, or searching data, the user can input ```c``` to cancel the operation
