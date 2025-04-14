@@ -45,13 +45,25 @@ def update_data(id):
     try:
         with connect_db() as con:
             cur = con.cursor()
-            cur.execute("SELECT * FROM items WHERE rowid = ?", (id,))
-            row = cur.fetchone() or None
-            if not row == None:
-                # TODO: add update functionality
-                print("Item to update:", row)
-            else:
-                print("ID not found")
+            data = cur.execute("SELECT * FROM items WHERE rowid = ?", (id,))
+            if data != None:
+                data_list = format_data_as_list(data)
+                print("You are updating:")
+                print(format_rows_as_table(data_list))
+                item = get_item_input("updating")
+                if len(item) == 4:
+                    try:
+                        update_statement = "UPDATE items SET name=?, purchase_date=?, purchase_price=?, purchase_location=? WHERE rowid = ?"
+                        name, date, price, location = item[0], item[1], item[2], item[3]
+                        cur.execute(update_statement, (name, date, price, location, id))
+                        print("Item updated:")
+                        data = cur.execute("SELECT * FROM items WHERE rowid = ?", (id,))
+                        data_list = format_data_as_list(data)
+                        print(format_rows_as_table(data_list))
+                    except sqlite3.OperationalError as e:
+                        print(e)
+                else:
+                    print("ID not found")
     except sqlite3.OperationalError as e:
         print(e)
 
@@ -180,6 +192,55 @@ def search(str):
         except sqlite3.OperationalError as e:
             print(e)
 
+def get_item_input(action):
+    """
+    Handle getting user input for item
+    Returns list with validated item input
+    Used when adding or updating an item
+    """
+    canceled = False
+    item = []
+    fields = ["name", "date", "price", "location"]
+    print("(c) to cancel operation")
+    for field in fields:
+        while True:
+            if field == "name" or field == "location":
+                input_val = input(f"{field}: ").strip().lower()
+                if input_val == "c":
+                    canceled = True
+                    break 
+                elif input_val:
+                    item.append(input_val)
+                    break
+                else:
+                    print(f"{field} required")
+            if field == "date":
+                input_val = input(f"{field}: ").strip()
+                if input_val == "c":
+                    canceled = True
+                    break 
+                elif validate_date(input_val):
+                    item.append(input_val)
+                    break
+                else:
+                    print(f"{field} required. YYYY-MM-DD")
+            if field == "price":
+                input_val = input(f"{field}: ").strip()
+                if input_val == "c":
+                    canceled = True
+                    break 
+                elif input_val:
+                    try:
+                        item.append(float(input_val))
+                        break
+                    except ValueError:
+                        print(f"{field} required. Enter a number, e.g. 120 or 120.25")
+        if canceled:
+            print(f"Canceled {action} item.")
+            break
+    if input_val != "e" and len(item) == 4:
+        return item
+
 def get_input():
     """
     Handles getting user input and calling CRUD functions
@@ -187,51 +248,11 @@ def get_input():
     while True:
         print("(v)iew, (a)dd, (d)elete, (u)pdate, (s)earch, (cl)ear, (ex)port or (e)xit")
         action = input("What would you like to do? ").strip().lower()
-        canceled = False
         if action == "v":
             view_data()
         elif action == "a":
-            item = []
-            fields = ["name", "date", "price", "location"]
-            print("(c) to cancel operation")
-            for field in fields:
-                while True:
-                    if field == "name" or field == "location":
-                        input_val = input(f"{field}: ").strip().lower()
-                        if input_val == "c":
-                            canceled = True
-                            break 
-                        elif input_val:
-                            item.append(input_val)
-                            break
-                        else:
-                            print(f"{field} required")
-                    if field == "date":
-                        input_val = input(f"{field}: ").strip()
-                        if input_val == "c":
-                            canceled = True
-                            break 
-                        elif validate_date(input_val):
-                            item.append(input_val)
-                            break
-                        else:
-                            print(f"{field} required. YYYY-MM-DD")
-                    if field == "price":
-                        input_val = input(f"{field}: ").strip()
-                        if input_val == "c":
-                            canceled = True
-                            break 
-                        elif input_val:
-                            try:
-                                item.append(float(input_val))
-                                break
-                            except ValueError:
-                                print(f"{field} required. Enter a number, e.g. 120 or 120.25")
-                if canceled:
-                    print("Canceled adding item.")
-                    break
-
-            if input_val != "e" and len(item) == 4:
+            item = get_item_input("adding")
+            if item:
                 add_data(item)
 
         elif action == "d":

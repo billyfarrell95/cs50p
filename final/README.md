@@ -6,7 +6,7 @@
 ## Functionality
 * Create SQLite Database
     * Create table for ```items```
-        * ```id``` (auto generated)
+        * ```id``` (auto incremented)
         * ```name```
         * ```purchase_price```
         * ```purchase_date```
@@ -23,7 +23,9 @@
         1. Gets input for an ```id``` and validates it is an ```int```
         2. Checks if a row with ```id``` exists before executing ```DELETE```
     * Update data
-        1. TODO
+        1. Gets input for an ```id``` and validates it is an ```int```
+        2. Checks if a row with ```id``` exists before executing ```UPDATE```
+        3. Updates shows the user the item they want to update before and after
     * Search for data based on item ```name```
         1. Gets input for search term and validates the ```str```
         2. Query the database: ```SELECT * FROM items WHERE name LIKE CONCAT('%', ?, '%')``` and fetches the data
