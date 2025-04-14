@@ -12,7 +12,7 @@
         * ```purchase_date```
         * ```purchase_location```
 * Get user input and run actions
-    * Provide usage instructions: ```(v)iew, (a)dd, (d)elete, (s)earch, (cl)ear, (ex)port or (e)xit```
+    * Provide usage instructions: ```(v)iew, (a)dd, (d)elete, (u)pdate, (s)earch, (cl)ear, (ex)port or (e)xit```
     * View data
         1. Formats database rows as table by converting a ```list``` to a table using ```tabulate``` and prints the list
     * Add data
