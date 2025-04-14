@@ -162,16 +162,12 @@ def clear_history():
     Clears user input history
     """
     print("Clearing...")
+    plat = platform.system()
     time.sleep(0.5)
-    try:
-        os.system("cls")
-    except:
-        pass
-
-    try:
+    if plat in ("Linux", "Darwin"):
         os.system("clear")
-    except:
-        pass
+    elif plat == "Windows":
+        os.system("cls")
 
 def validate_date(str):
     """
