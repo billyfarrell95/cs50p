@@ -133,7 +133,7 @@ def create_html(html):
         file.write(html)
         file.write("</body>")
         file.write("</html>")
-    #TODO: Make sure opening works on MacOS and Windows
+        
     while True:
         open_file = input("output.html created. Open? (y/n) ").strip()
         if open_file.lower() == "y":
