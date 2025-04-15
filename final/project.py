@@ -144,11 +144,8 @@ def create_html(html):
                 abs_path = os.path.abspath("output.html")
                 if plat in ("Linux", "Darwin"):
                     webbrowser.open(f"file://{abs_path}", new=0)
-                    print(abs_path, "Mac or Linux")
                 elif plat == "Windows":
                     webbrowser.open(abs_path, new=0)
-                    print(abs_path, "Windows")
-                
                 break
             except webbrowser.Error as e:
                 print(e)
