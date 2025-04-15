@@ -249,7 +249,7 @@ def get_input():
     Handles getting user input and calling CRUD functions
     """
     while True:
-        print("(v)iew, (a)dd, (d)elete, (u)pdate, (s)earch, (cl)ear, (ex)port or (e)xit")
+        print("\n(v)iew, (a)dd, (d)elete, (u)pdate, (s)earch, (cl)ear, (ex)port or (e)xit", end="\n\n")
         action = input("What would you like to do? ").strip().lower()
         if action == "v":
             view_data()
